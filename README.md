@@ -185,12 +185,25 @@ Production: https://api.etherfuse.com
 ```
 
 ### Stellar
+
+**Horizon** = REST API for "classic" Stellar operations:
+- Account balances, trustlines
+- Payments, path payments (DEX swaps)
+- Transaction history
+
+**Soroban RPC** = API for smart contracts:
+- Blend Protocol (lending/borrowing)
+- DeFindex (vaults)
+- Any custom Soroban contract
+
 ```
 Testnet Horizon: https://horizon-testnet.stellar.org
 Testnet Soroban: https://soroban-testnet.stellar.org
 Mainnet Horizon: https://horizon.stellar.org
 Mainnet Soroban: https://soroban.stellar.org
 ```
+
+If you're only doing classic Stellar (payments, swaps, anchors), you only need Horizon. If you're integrating DeFi protocols, you need both.
 
 ### Asset Issuers (Testnet)
 ```
