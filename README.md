@@ -28,11 +28,34 @@ This document compiles lessons learned from multiple teams building Stellar appl
 
 **Root Cause**: Etherfuse requires exact ID consistency. Every quote and order call must use the exact same `customer_id` + `bank_account_id` pair that was used to generate the onboarding URL the user completed.
 
-**The Fix**:
-1. Generate ONE `bankAccountId` UUID and save it
-2. Generate the onboarding URL with that specific ID
-3. User completes onboarding (this binds the IDs together)
-4. Use those SAME IDs for ALL subsequent API calls - forever
+**The Fix** (note: YOUR app generates the IDs, not Etherfuse):
+1. **Your app** generates `customer_id` and `bank_account_id` UUIDs
+2. **Your app** stores these IDs (database, keyed by user's wallet pubkey)
+3. **Your app** requests onboarding URL from Etherfuse, passing those IDs
+4. **User** completes KYC on Etherfuse (this binds YOUR IDs to their identity)
+5. **Your app** reuses those SAME IDs for ALL future quotes/orders - forever
+
+```
+Your App                          Etherfuse
+   |                                  |
+   |-- Generate customer_id --------->|
+   |-- Generate bank_account_id ----->|
+   |-- Store both IDs locally ------->|
+   |                                  |
+   |-- Request onboarding URL ------->|
+   |   (with your IDs)                |
+   |<-------- Returns KYC URL --------|
+   |                                  |
+   |-- Redirect user to KYC --------->|
+   |                                  |-- User completes KYC
+   |                                  |-- Etherfuse binds YOUR IDs
+   |                                  |
+   |-- Request quote ---------------->|
+   |   (with SAME IDs)                |
+   |<-------- Returns quote ----------|
+```
+
+**Key insight**: You own the IDs. Etherfuse just binds them to a verified identity during KYC.
 
 ---
 
