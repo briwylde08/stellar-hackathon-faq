@@ -8,7 +8,7 @@ This document compiles lessons learned from multiple teams building Stellar appl
 
 | Gotcha | Solution |
 |--------|----------|
-| **Bank Account Not Found** (60+ min debugger) | `customer_id` + `bank_account_id` must be generated ONCE, used in onboarding, then reused FOREVER. New IDs = broken. |
+| **Bank Account Not Found** | `customer_id` + `bank_account_id` must be generated ONCE, used in onboarding, then reused FOREVER. New IDs = broken. |
 | Responses nested under `onramp`/`offramp` keys | Unwrap: `response.onramp \|\| response` |
 | Auth header format | `Authorization: ${apiKey}` (no "Bearer" prefix) |
 | Sandbox URL different | Use `api.sand.etherfuse.com` not production |
@@ -59,7 +59,7 @@ Your App                          Etherfuse
 
 ---
 
-## Testnet Asset Fragmentation (THE BIG ONE)
+## Testnet Asset Fragmentation
 
 | Problem | Impact | Workaround |
 |---------|--------|------------|
