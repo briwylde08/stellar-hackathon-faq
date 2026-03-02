@@ -23,7 +23,7 @@ This document compiles lessons learned from multiple teams building Stellar appl
 
 **What doesn't work**:
 - Generating random `bankAccountId` UUIDs on each request
-- Registering bank accounts via API
+- Bank account registration alone is insufficient; quotes/orders must still reuse the IDs bound during KYC
 - Using `bankAccountId` from previous onboarding URLs
 
 **Root Cause**: Etherfuse requires exact ID consistency. Every quote and order call must use the exact same `customer_id` + `bank_account_id` pair that was used to generate the onboarding URL the user completed.
@@ -79,7 +79,7 @@ Your App                          Etherfuse
 
 | Gotcha | Solution |
 |--------|----------|
-| SDK v14 renamed `SorobanRpc` → `rpc` | Update imports to use `rpc` namespace |
+| SDK v14 renamed `SorobanRpc` → `rpc` in the JS SDK | Update imports to use `rpc` namespace |
 | Text memo max 28 bytes | `uuid.replace(/-/g, "").slice(0, 28)` |
 | Trustlines required before receiving | Check and prompt user to add trustline first |
 | `sendTransaction` returns PENDING | Must poll for actual ledger inclusion |
@@ -197,10 +197,11 @@ Production: https://api.etherfuse.com
 - Any custom Soroban contract
 
 ```
-Testnet Horizon: https://horizon-testnet.stellar.org
-Testnet Soroban: https://soroban-testnet.stellar.org
-Mainnet Horizon: https://horizon.stellar.org
-Mainnet Soroban: https://soroban.stellar.org
+Testnet Horizon: [https://horizon-testnet.stellar.org](https://horizon-testnet.stellar.org)
+Testnet Soroban RPC: [https://soroban-testnet.stellar.org](https://soroban-testnet.stellar.org)
+Mainnet Horizon: [https://horizon.stellar.org](https://horizon.stellar.org)
+Mainnet Soroban RPC: Use a hosted RPC provider or your own node; see the providers list:
+https://developers.stellar.org/docs/data/apis/rpc/providers
 ```
 
 If you're only doing classic Stellar (payments, swaps, anchors), you only need Horizon. If you're integrating DeFi protocols, you need both.
